@@ -18,6 +18,7 @@ namespace GMTGUI
 {
     public partial class Form1 : Form
     {
+
         public Form1()
         {
             InitializeComponent();
@@ -27,7 +28,7 @@ namespace GMTGUI
             {
                 IniData data = parser.ReadFile("GMTGUI.ini");
                 string GMTLauncherPath = data["Main"]["GMTLauncherPath"];
-                foreach (var key in data["Games"])
+                foreach (var key in data["GamesFriendlyNames"])
                 {
                     int tempgamescount = listBox1.Items.Count;
                     listBox1.Items.Insert(tempgamescount, key.Value);
@@ -56,18 +57,21 @@ namespace GMTGUI
             var parser = new FileIniDataParser();
             IniData data = parser.ReadFile("GMTGUI.ini");
             data["Games"]["Game"+tempgamescount.ToString()] = filename;
+            data["GamesFriendlyNames"]["Game" + tempgamescount.ToString()] = filename; //by default FriendlyName equals filename, user can change that in "Configure Game"
+            data["GamesIsWindowed"]["Game" + tempgamescount.ToString()] = "No";
             parser.WriteFile("GMTGUI.ini", data);
         }
 
         //Links to cool, dino approved(tm) resources.
+        //*yes they are hardcoded, i don't think they'll ever change*
         private void GMTDocsLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            System.Diagnostics.Process.Start("https://yal.cc/r/19/gmt");
+            Process.Start("https://yal.cc/r/19/gmt");
         }
 
         private void GMTDiscordLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            System.Diagnostics.Process.Start("https://discord.gg/4e63T3W");
+            Process.Start("https://discord.gg/4e63T3W");
         }
 
         private void button4_Click(object sender, EventArgs e)
@@ -75,11 +79,15 @@ namespace GMTGUI
             var parser = new FileIniDataParser();
             IniData data = parser.ReadFile("GMTGUI.ini");
             string GMTLauncherPath = data["Main"]["GMTLauncherPath"];
+            string GamePath = data["Games"]["Game" + listBox1.SelectedIndex];
             if (File.Exists(GMTLauncherPath))
             {
-                if (File.Exists(listBox1.SelectedItem.ToString()))
+                if (File.Exists(GamePath))
                 {
-                    Process.Start(GMTLauncherPath, listBox1.SelectedItem.ToString());
+                    if (data["GamesIsWindowed"]["Game" + listBox1.SelectedIndex] == "No")
+                    Process.Start(GMTLauncherPath, GamePath);
+                    else
+                    Process.Start(GMTLauncherPath, GamePath + " -inawindow"); // -inawindow makes GM:S game force windowed mode
                 }
                 else //game exe does not exist!
                 {
@@ -103,12 +111,6 @@ namespace GMTGUI
             }
         }
 
-        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            //listBox1.SetSelected(listBox1.SelectedIndex, true);
-            // NO!
-        }
-
         private void button2_Click(object sender, EventArgs e)
         {
             int selectedindex = listBox1.SelectedIndex;
@@ -125,7 +127,31 @@ namespace GMTGUI
 
         private void button3_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Not yet implemented, sorry.");
+            //MessageBox.Show("Not yet implemented, sorry.");
+            var parser = new FileIniDataParser();
+            IniData data = parser.ReadFile("GMTGUI.ini");
+            data["Main"]["LastSelectedGame"] = listBox1.SelectedIndex.ToString();
+            parser.WriteFile("GMTGUI.ini", data);
+            GameOptionsForm settingsForm = new GameOptionsForm();
+            settingsForm.Show();
         }
+
+        private void timer1_Tick(object sender, EventArgs e) //most elegant solution
+        {
+            if (GMTGUI.UpdateVar.UpdateMainFormOrWut)
+            {
+                GMTGUI.UpdateVar.UpdateMainFormOrWut = false;
+                listBox1.Items.Clear();
+                var parser = new FileIniDataParser();
+                IniData data = parser.ReadFile("GMTGUI.ini");
+                string GMTLauncherPath = data["Main"]["GMTLauncherPath"];
+                foreach (var key in data["GamesFriendlyNames"])
+                {
+                    int tempgamescount = listBox1.Items.Count;
+                    listBox1.Items.Insert(tempgamescount, key.Value);
+                }
+            }
+        }
+
     }
 }

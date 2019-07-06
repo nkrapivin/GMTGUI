@@ -19,4 +19,8 @@ namespace GMTGUI
             Application.Run(new Form1());
         }
     }
+    public static class UpdateVar
+    {
+        public static bool UpdateMainFormOrWut = false;
+    }
 }
