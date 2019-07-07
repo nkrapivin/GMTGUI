@@ -36,10 +36,13 @@
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.EditGMTINIBtn = new System.Windows.Forms.Button();
+            this.RestoreGMTIniBtn = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // button1
             // 
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.button1.Location = new System.Drawing.Point(499, 132);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(95, 23);
@@ -59,6 +62,8 @@
             // 
             // textBox1
             // 
+            this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.textBox1.Location = new System.Drawing.Point(108, 13);
             this.textBox1.Name = "textBox1";
             this.textBox1.ReadOnly = true;
@@ -67,6 +72,7 @@
             // 
             // button3
             // 
+            this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button3.Location = new System.Drawing.Point(499, 12);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(94, 23);
@@ -86,6 +92,8 @@
             // 
             // textBox2
             // 
+            this.textBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.textBox2.Location = new System.Drawing.Point(108, 48);
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(385, 20);
@@ -106,12 +114,36 @@
             this.checkBox1.Text = "Force windowed mode?";
             this.checkBox1.UseVisualStyleBackColor = true;
             // 
+            // EditGMTINIBtn
+            // 
+            this.EditGMTINIBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.EditGMTINIBtn.Location = new System.Drawing.Point(398, 132);
+            this.EditGMTINIBtn.Name = "EditGMTINIBtn";
+            this.EditGMTINIBtn.Size = new System.Drawing.Size(95, 23);
+            this.EditGMTINIBtn.TabIndex = 9;
+            this.EditGMTINIBtn.Text = "Edit GMT.ini";
+            this.EditGMTINIBtn.UseVisualStyleBackColor = true;
+            this.EditGMTINIBtn.Click += new System.EventHandler(this.EditGMTINIBtn_Click);
+            // 
+            // RestoreGMTIniBtn
+            // 
+            this.RestoreGMTIniBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.RestoreGMTIniBtn.Location = new System.Drawing.Point(265, 132);
+            this.RestoreGMTIniBtn.Name = "RestoreGMTIniBtn";
+            this.RestoreGMTIniBtn.Size = new System.Drawing.Size(127, 23);
+            this.RestoreGMTIniBtn.TabIndex = 10;
+            this.RestoreGMTIniBtn.Text = "Restore default GMT.ini";
+            this.RestoreGMTIniBtn.UseVisualStyleBackColor = true;
+            this.RestoreGMTIniBtn.Click += new System.EventHandler(this.RestoreGMTIniBtn_Click);
+            // 
             // GameOptionsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(606, 167);
             this.ControlBox = false;
+            this.Controls.Add(this.RestoreGMTIniBtn);
+            this.Controls.Add(this.EditGMTINIBtn);
             this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.textBox2);
             this.Controls.Add(this.label2);
@@ -136,5 +168,7 @@
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.Button EditGMTINIBtn;
+        private System.Windows.Forms.Button RestoreGMTIniBtn;
     }
 }

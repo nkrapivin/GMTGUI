@@ -61,5 +61,47 @@ namespace GMTGUI
             //GameIndex = 0;
         }
 
+        private void EditGMTINIBtn_Click(object sender, EventArgs e)
+        {
+            var parser = new FileIniDataParser();
+            IniData data = parser.ReadFile("GMTGUI.ini");
+            string exampleinipath = Path.GetDirectoryName(data["Main"]["GMTLauncherPath"]) + "\\GMT-Example.ini";
+            string gamepath = Path.GetDirectoryName(data["Games"]["Game" + GameIndex]) + "\\GMT.ini";
+            //MessageBox.Show(exampleinipath);
+            if ((!File.Exists(exampleinipath)) && (!File.Exists(gamepath)))
+            {
+                MessageBox.Show("GMT-Example.ini doesn't exist in GMT-Launcher directory\nand GMT.ini doesn't exist in game directory! Please re-download GMTogether.");
+                return;
+            }
+            else if ((!File.Exists(gamepath)) && (File.Exists(exampleinipath)))
+            {
+                File.Copy(exampleinipath, gamepath);
+            }
+            if (File.Exists(gamepath))
+            {
+                Process.Start("notepad", gamepath);
+            }
+        }
+
+        private void RestoreGMTIniBtn_Click(object sender, EventArgs e)
+        {
+            var parser = new FileIniDataParser();
+            IniData data = parser.ReadFile("GMTGUI.ini");
+            string gamepath = Path.GetDirectoryName(data["Games"]["Game" + GameIndex]);
+            string exampleinipath = Path.GetDirectoryName(data["Main"]["GMTLauncherPath"]) + "\\GMT-Example.ini";
+            if (!File.Exists(exampleinipath))
+            {
+                MessageBox.Show(this, "Default GMT-Example.ini doesn't exist in GMT-Launcher directory!\nPlease re-download GMTogether.", "Oh no.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            else
+            {
+                File.Delete(gamepath + "\\GMT.ini");
+                File.Copy(exampleinipath, gamepath + "\\GMT.ini");
+                MessageBox.Show(this, "Default GMT.ini file was restored.", "Done.", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            
+        }
+
     }
 }

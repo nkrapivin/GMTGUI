@@ -114,13 +114,34 @@ namespace GMTGUI
         private void button2_Click(object sender, EventArgs e)
         {
             int selectedindex = listBox1.SelectedIndex;
-            listBox1.Items.RemoveAt(selectedindex);
             var parser = new FileIniDataParser();
             IniData data = parser.ReadFile("GMTGUI.ini");
-            data.Sections.RemoveSection("Games");
+            List<string> tempgamepaths = new List<string>() { };
+            List<string> tempfriendlynames = new List<string>() { };
+            List<string> tempiswindowed = new List<string>() { };
             for (int i = 0; i < listBox1.Items.Count; i++)
             {
-                data["Games"]["Game" + i.ToString()] = listBox1.Items[i].ToString(); //I know it's terrible.
+                tempgamepaths.Insert(i, data["Games"]["Game" + i.ToString()]);
+                tempfriendlynames.Insert(i, data["GamesFriendlyNames"]["Game" + i.ToString()]);
+                tempiswindowed.Insert(i, data["GamesIsWindowed"]["Game" + i.ToString()]);
+            }
+            tempgamepaths.RemoveAt(selectedindex);
+            tempfriendlynames.RemoveAt(selectedindex);
+            tempiswindowed.RemoveAt(selectedindex);
+            data.Sections.RemoveSection("Games");
+            data.Sections.RemoveSection("GamesFriendlyNames");
+            data.Sections.RemoveSection("GamesIsWindowed");
+            listBox1.Items.Clear();
+            for (int i = 0; i < tempgamepaths.Count; i++ )
+            {
+                data["Games"]["Game" + i.ToString()] = tempgamepaths[i];
+                data["GamesFriendlyNames"]["Game" + i.ToString()] = tempfriendlynames[i];
+                data["GamesIsWindowed"]["Game" + i.ToString()] = tempiswindowed[i];
+            }
+            foreach (var key in data["GamesFriendlyNames"])
+            {
+                int tempgamescount = listBox1.Items.Count;
+                listBox1.Items.Insert(tempgamescount, key.Value);
             }
             parser.WriteFile("GMTGUI.ini", data);
         }
